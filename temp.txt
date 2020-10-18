@@ -1,0 +1,140 @@
+    public class AgwpeEventArgs : EventArgs
+    {
+        private byte[] header;
+        private byte[] data;
+        private readonly AgwpeHeader frameHeader;
+        private readonly object frameData;
+
+        /// <summary>
+        /// Gets an AgwpeHeader object representing the received AGWPE frame header.
+        /// </summary>
+        public AgwpeHeader FrameHeader
+        {
+            get { return frameHeader; }
+        }
+
+        /// <summary>
+        /// Gets an object representing the received AGWPE frame data.
+        /// </summary>
+        /// <remarks>
+        /// The returned object is specific to the DataKind value as follows:<br/>
+        /// DataKind    Object type
+        /// --------    --------------------
+        ///     R       AgwpeVersion
+        ///     G       AgwpePortInfo
+        ///     g       AgwpePortCapability
+        ///     X       boolean
+        ///     y       int
+        ///     Y       int
+        ///     H       AgwpeStationsHeard
+        ///     C       AgwpeAX25Connect
+        ///     D       AgwpeAX25Data
+        ///     d       AgwpeAX25Disconnect
+        ///     U       AgwpeMoniUnproto
+        ///     I       AgwpeMoniConnInfo
+        ///     S       AgwpeMoniSuperInfo
+        ///     T       AgwpeMoniOwn
+        ///     K       AgwpeMoniRaw
+        /// </remarks>
+        public object FrameData
+        {
+            get { return frameData; }
+        }
+
+        /// <summary>
+        /// Gets a byte array containing the received AGWPE frame header.
+        /// </summary>
+        public byte[] HeaderBytes
+        {
+            get { return header; }
+        }
+
+        /// <summary>
+        /// Gets a byte array containing the received AGWPE frame data.
+        /// </summary>
+        public byte[] DataBytes
+        {
+            get { return data; }
+        }
+        
+        /// <summary>
+        /// Constructor for the AgwpeEventArgs class.
+        /// </summary>
+        /// <param name="header">A byte array containing the received AGWPE frame header.</param>
+        /// <param name="data">A byte array containing the received AGWPE frame data.</param>
+        public AgwpeEventArgs(byte[] header, byte[] data)
+        {
+            if (header != null & header.Length == 36)
+            {
+                this.header = new byte[36];
+                header.CopyTo(this.header, 0);
+            }
+
+            if (data != null & data.Length > 0)
+            {
+                this.data = new byte[data.Length];
+                data.CopyTo(this.data, 0);
+            }
+
+            frameHeader = new AgwpeHeader(header);
+
+            if (frameHeader.DataLen > 0 & data.GetLength(0) >= frameHeader.DataLen)
+            {
+                switch (frameHeader.DataKind)
+                {
+                    case (byte)'R': // Version
+                        frameData = new AgwpeVersion(data);
+                        break;
+                    case (byte)'X': // Callsign Registration
+                        if (data[0] == 1)
+                            frameData = true;
+                        else
+                            frameData = false;
+                        break;
+                    case (byte)'G': // Port Information
+                        frameData = new AgwpePortInfo(data, frameHeader.DataLen);
+                        break;
+                    case (byte)'g': // Port Capability
+                        frameData = new AgwpePortCapability(data);
+                        break;
+                    case (byte)'y': // Frames Outstanding on a Port
+                    case (byte)'Y': // Frames Outstanding on a Connection
+                        frameData = System.BitConverter.ToUInt32(data, 0);
+                        break;
+                    case (byte)'H': // Stations Heard on a Port
+                        frameData = new AgwpeStationsHeard(data, frameHeader.DataLen);
+                        break;
+                    case (byte)'C': // AX.25 Connection Received
+                    case (byte)'c': // Non-Standard AX.25 Connection Received
+                    case (byte)'v': // AX.25 Connection Using Digipeaters Received
+                        frameData = new AgwpeAX25Connect(data, frameHeader.DataLen);
+                        break;
+                    case (byte)'d': // AX.25 Disconnect Received
+                    case (byte)'D': // AX.25 Connection Data
+                    case (byte)'S': // Monitored Supervisory Information
+                    case (byte)'T': // Monitoring Own Information
+                    case (byte)'K': // Monitored Information in Raw Format
+                        frameData = new AgwpeAX25Data(data, frameHeader.DataLen);
+                        break;
+                    case (byte)'I': // Monitored Connected Information
+                        frameData = new AgwpeMoniConnInfo(data, frameHeader.DataLen);
+                        break;
+                    case (byte)'U': // Monitored Unproto Information
+                        frameData = new AgwpeMoniUnproto(data, frameHeader.DataLen);
+                        break;
+                }
+            }
+            else
+                this.frameData = null;
+        }
+    }
+
+
+
+        public delegate void AgwpeFrameReceivedEventHandler(object sender, AgwpeEventArgs e);
+        public event AgwpeFrameReceivedEventHandler FrameReceived;
+        public virtual void OnFrameReceived(AgwpeEventArgs e)
+        {
+            if (FrameReceived != null)
+                FrameReceived(this, e);
+        }
