@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30611.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GarminAGWPEInterface.Console", "GarminAGWPEInterface.Console\GarminAGWPEInterface.Console.csproj", "{839889A7-2104-49CF-8B31-6F40C4B3CC05}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RepoFiles", "RepoFiles", "{9E80EA3B-2385-4960-9CB5-020BF554AFB3}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Garmin.Device.Core", "Garmin.Device.Core\Garmin.Device.Core.csproj", "{1EB16237-97A2-4F6F-97EB-48B3B4B17530}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GarminAGWPEInterface.UI", "GarminAGWPEInterface.UI\GarminAGWPEInterface.UI.csproj", "{18EBD50B-C91B-4224-998D-8614E66C6D62}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{839889A7-2104-49CF-8B31-6F40C4B3CC05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{839889A7-2104-49CF-8B31-6F40C4B3CC05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{839889A7-2104-49CF-8B31-6F40C4B3CC05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{839889A7-2104-49CF-8B31-6F40C4B3CC05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EB16237-97A2-4F6F-97EB-48B3B4B17530}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EB16237-97A2-4F6F-97EB-48B3B4B17530}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EB16237-97A2-4F6F-97EB-48B3B4B17530}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EB16237-97A2-4F6F-97EB-48B3B4B17530}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18EBD50B-C91B-4224-998D-8614E66C6D62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18EBD50B-C91B-4224-998D-8614E66C6D62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18EBD50B-C91B-4224-998D-8614E66C6D62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18EBD50B-C91B-4224-998D-8614E66C6D62}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CFEE4065-FF12-459A-98C4-18B6131CF6D5}
+	EndGlobalSection
+EndGlobal
